@@ -1,6 +1,6 @@
 from typing import List, Set, Optional, Tuple
 
-from src.models.cell import CellType, Cell
+from src.models.maze.hashable_2d_maze import CellType, Cell
 from src.search_methods.search_method import SearchMethod, SearchResponse
 
 

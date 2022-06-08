@@ -3,8 +3,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List, Iterable, Optional, Tuple
 
-from src.models.cell import Cell, CellType
-from src.models.maze import DefaultMazeWithViewer, Hashable2DMaze
+from src.models.maze.default_2d_maze import DefaultMazeWithViewer
+from src.models.maze.hashable_2d_maze import Cell, CellType, Hashable2DMaze
 
 
 class SearchResponse:
@@ -38,4 +38,3 @@ class SearchMethod(ABC):
         stack_cells = [self.hash_maze.maze[position] for position in frontier]
         visited_cells = [self.hash_maze.maze[position] for position in expanded]
         self.viewer.update(generated=stack_cells, expanded=visited_cells)
-
