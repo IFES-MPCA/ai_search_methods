@@ -3,17 +3,17 @@ from typing import List, Iterable, Tuple
 
 from numpy import ndarray
 
-from src.models.cell import CellType, Cell
+from src.models.cell import Cell
 
 
 class DefaultMazeWithViewer(ABC):
 
-    def __init__(self, labirinto: List[List[CellType]], start: Cell, goal: Cell, zoom=50,
+    def __init__(self, labirinto: List[List[int]], start: Cell, goal: Cell, zoom=50,
                  step_time_miliseconds=-1):
         """
         Modelo de labirinto padrão entregue pelo professor.
         Interface usada para poder interagir com as classes dadas pelo professor sem ter que
-        alterar o código dado como modelo.
+        alterar o código dado como template.
 
         :param labirinto: Matriz de células do labirinto.
         :param start: célula inicial
