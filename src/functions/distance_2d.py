@@ -4,7 +4,7 @@ from typing import Tuple
 Point2D = Tuple[int, int]
 
 
-def calculate_euclidian_distance(point_a: Point2D, point_b: Point2D) -> float:
+def calc_euclidian_distance(point_a: Point2D, point_b: Point2D) -> float:
     """
     Calcula a distância euclidiana entre dois pontos.
     :param point_a: Primeiro par ordenado (x, y)

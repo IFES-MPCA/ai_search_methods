@@ -1,5 +1,6 @@
 from typing import Iterable, List
 
+from src.functions.distance_2d import calc_euclidian_distance
 from src.models.cell import Cell, CellType, CellPosition
 from src.models.maze.default_2d_maze import DefaultMazeWithViewer
 from src.models.maze.hashable_2d_maze import Hashable2DMaze
@@ -24,8 +25,9 @@ class Maze2DProblem(SearchProblem[Cell]):
     def is_goal_state(self, state: Cell) -> bool:
         return state.type == CellType.GOAL or state.position == self.goal.position
 
-    def calculate_cost(self, current_state: Cell) -> int:
-        return 
+    def calculate_cost(self, actions: List[Cell]) -> int:
+        index_range = range(len(actions) - 2)
+        return sum([calc_euclidian_distance(actions[i].position, actions[i + 1].position) for i in index_range])
 
     def get_successors(self, state: Cell) -> Iterable[Cell]:
         all_positions: List[CellPosition] = [

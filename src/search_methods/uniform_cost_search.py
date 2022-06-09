@@ -1,52 +1,50 @@
 from queue import PriorityQueue
-from typing import Optional, Set, List, Tuple
+from typing import Optional, List, Tuple
 
+from src.functions.distance_2d import calc_euclidian_distance
 from src.models.cell import Cell, CellType, CellPosition
 from src.search_methods.search_method import SearchMethod, CallbackSearch, SearchResponse
+
+PriorityQueueItem = Tuple[float, Tuple[CellPosition, Optional[CellPosition], List[CellPosition]]]
 
 
 class UniformCostSearch(SearchMethod):
 
+    def calc_cost(self, states: List[CellPosition]) -> float:
+        return sum([calc_euclidian_distance(states[i], states[i + 1]) for i in range(len(states) - 2)])
+
     def solve(self, step_callback: CallbackSearch) -> Optional[SearchResponse]:
-        frontier: PriorityQueue[Tuple[int, CellPosition]] = PriorityQueue()
-        frontier_set: Set[CellPosition] = set()
-
-        expanded_set: Set[CellPosition] = set()
-        expanded_in_order: List[Cell] = []
-
+        frontier: PriorityQueue[PriorityQueueItem] = PriorityQueue()
         current_cell: Cell = self.start
-        current_position: CellPosition = self.start.position
-        frontier.put((0, current_position))
-        frontier_set.add(current_position)
+        visited: List[CellPosition] = []
+        actions: List[CellPosition] = []
+
+        frontier.put((0, (current_cell.position, None, actions)))
 
         while not frontier.empty():
-            current_cost, current_position = frontier.get()
-
-            if current_position in frontier_set:
-                frontier_set.remove(current_position)
-
-            if current_position in expanded_set:
-                continue
-
-            current_cell = self.maze.get_cell(current_position)
-            expanded_set.add(current_position)
-            expanded_in_order.append(current_cell)
+            priority, current_path = frontier.get()
+            current_state = current_path[0]
+            current_action = current_path[1]
+            actions = current_path[2]
+            current_cell = self.maze.get_cell(current_state)
 
             if current_cell.type is CellType.GOAL:
-                break
+                step_callback(visited, actions)
+                cells_path = [self.maze.get_cell(position) for position in actions]
+                return SearchResponse(cells_path, len(cells_path), len(visited))
 
-            neighbors = self.maze.get_neighbors(current_cell)
+            if current_state not in visited:
+                visited.append(current_state)
+                neighbors = self.maze.get_neighbors(current_cell)
 
-            for adjacent_cell in neighbors:
-                if adjacent_cell.position not in expanded_set or adjacent_cell.position not in frontier_set:
-                    frontier.put((current_cost + 1, adjacent_cell.position))
-                    frontier_set.add(adjacent_cell.position)
+                for child_state in neighbors:
+                    if child_state.position in visited:
+                        continue
+                    moves = actions.copy()
+                    moves.append(child_state.position)
 
-            step_callback([v for p, v in frontier.queue], expanded_set)
+                    cost = self.calc_cost(moves)
+                    frontier.put((cost, (child_state.position, child_state.position, moves)))
 
-        if current_cell.type is not CellType.GOAL:
-            return None
-
-        step_callback([v for p, v in frontier.queue], expanded_set)
-        visited_cells = [self.maze.get_cell(position.position) for position in expanded_in_order]
-        return SearchResponse(visited_cells, len(expanded_set), len(expanded_set))
+            temp = [item[0] for cost, item in frontier.queue]
+            step_callback(temp, visited)
