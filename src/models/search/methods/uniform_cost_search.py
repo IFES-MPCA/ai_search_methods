@@ -13,10 +13,10 @@ class UniformCostSearch(SearchFunction):
     @measure
     def solve(self) -> Optional[SearchResponse]:
         frontier: PriorityQueue[PriorityQueueItem] = PriorityQueue()
-        current_state = self.problem.start_state()
         visited: Set[T] = set()
         actions: List[T] = []
 
+        current_state = self.problem.start_state()
         frontier.put((0, (current_state, actions)))
 
         while not frontier.empty():
@@ -31,7 +31,7 @@ class UniformCostSearch(SearchFunction):
                 continue
 
             visited.add(current_state)
-            neighbors = self.problem.get_successors(current_state)
+            neighbors = sorted(self.problem.get_successors(current_state))
 
             for child_state in neighbors:
                 if child_state in visited:

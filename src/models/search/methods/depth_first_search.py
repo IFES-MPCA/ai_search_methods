@@ -1,52 +1,41 @@
 from typing import List, Set, Optional, Tuple
 
-from src.models.cell import CellPosition
-from src.models.maze.hashable_2d_maze import CellType, Cell
-from src.search_methods.search_method import SearchMethod, SearchResponse, CallbackSearch
+from src.models.base import T
+from src.models.search.search_function import SearchFunction, SearchResponse
+
+State = Tuple[T, List[T]]
 
 
-class DepthFirstSearch(SearchMethod):
+class DepthFirstSearch(SearchFunction):
 
-    def solve(self, step_callback: CallbackSearch) -> Optional[SearchResponse]:
-        current_cell: Cell = self.start
+    def solve(self) -> Optional[SearchResponse]:
+        frontier: List[State] = []
+        visited: Set[T] = set()
+        actions: List[T] = []
 
-        # Armazenar somente a tupla (x, y), pois ela é imutável e podemos usar o operator IN
-        # nativo das estruturas de dados
+        current_state: T = self.problem.start_state()
+        frontier.append((current_state, actions))
 
-        # Lista de nós a serem visitados (fronteira)
-        stack: List[CellPosition] = [self.start.position]
+        while frontier:
+            current_state, actions = frontier.pop()
 
-        # Lista de nós já visitados, uso de conjunto com tuplas para evitar
-        # repetição e acelerar comparação usando o operador IN
-        expanded_set: Set[CellPosition] = set()
-        expanded_in_order: List[CellPosition] = []
+            if self.problem.is_goal_state(current_state):
+                return SearchResponse(actions, len(actions), len(visited))
 
-        while stack:
-            current_position = stack.pop()
-
-            if current_position in expanded_set:
+            if current_state in visited:
                 continue
 
-            current_cell = self.maze.get_cell(current_position)
-            expanded_set.add(current_position)
-            expanded_in_order.append(current_position)
+            visited.add(current_state)
+            neighbors = sorted(self.problem.get_successors(current_state))
 
-            if current_cell.type is CellType.GOAL:
-                break
-
-            neighbors = self.maze.get_neighbors(current_cell)
-
-            for adjacent_cell in neighbors:
-                if adjacent_cell.position in expanded_set or adjacent_cell.position in stack:
+            for child_state in neighbors:
+                if child_state in visited:
                     continue
 
-                stack.append(adjacent_cell.position)
+                path = actions[:]
+                path.append(child_state)
+                frontier.append((child_state, path))
 
-            step_callback(stack, expanded_set)
-
-        if current_cell.type is not CellType.GOAL:
-            return None
-
-        step_callback(stack, expanded_set)
-        visited_cells = [self.maze.get_cell(position) for position in expanded_in_order]
-        return SearchResponse(visited_cells, len(expanded_set), len(expanded_set))
+            if self.on_step:
+                frontier_cells = [item for item, path in frontier]
+                self.on_step(frontier_cells, visited)
