@@ -25,6 +25,9 @@ class Maze2DProblem(SearchProblem[Cell]):
     def start_state(self) -> Cell:
         return self.start
 
+    def goal_state(self) -> Cell:
+        return self.goal
+
     def is_goal_state(self, state: Cell) -> bool:
         return state.position == self.goal.position
 
@@ -32,8 +35,17 @@ class Maze2DProblem(SearchProblem[Cell]):
         index_range = range(len(actions) - 1)
         return sum([calc_euclidian_distance(actions[i].position, actions[i + 1].position) for i in index_range])
 
+    def __valid_position__(self, position: CellPosition) -> bool:
+        if position[0] < 0 or position[0] >= self.maze.columns:
+            return False
+
+        if position[1] < 0 or position[1] >= self.maze.lines:
+            return False
+
+        return self.maze.get_cell(position).type != CellType.OBSTACLE
+
     def get_successors(self, state: Cell) -> Iterable[Cell]:
-        all_positions: List[CellPosition] = [
+        all_positions: List[CellPosition] = sorted([
             (state.x, state.y - 1),
             (state.x - 1, state.y - 1),
             (state.x + 1, state.y - 1),
@@ -42,8 +54,8 @@ class Maze2DProblem(SearchProblem[Cell]):
             (state.x + 1, state.y + 1),
             (state.x - 1, state.y),
             (state.x + 1, state.y),
-        ]
+        ])
         return [
             Cell(position[1], position[0], state, self.maze.get_cell(position).type)
-            for position in all_positions if position in self.maze and self.maze.get_cell(position).type != CellType.OBSTACLE
+            for position in all_positions if self.__valid_position__(position)
         ]

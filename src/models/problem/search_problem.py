@@ -15,6 +15,10 @@ class SearchProblem(ABC, Generic[T]):
         pass
 
     @abstractmethod
+    def goal_state(self) -> T:
+        pass
+
+    @abstractmethod
     def is_goal_state(self, state: T) -> bool:
         pass
 

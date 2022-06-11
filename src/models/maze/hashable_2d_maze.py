@@ -7,8 +7,11 @@ class Hashable2DMaze:
 
     def __init__(self, default_maze: List[List[int]]):
         self.__maze = {}
-        for y in range(len(default_maze)):
-            for x in range(len(default_maze[y])):
+        self.lines = len(default_maze)
+        self.columns = len(default_maze[0])
+
+        for y in range(self.lines):
+            for x in range(self.columns):
                 self.__maze[(x, y)] = Cell(y, x, None, CellType(default_maze[y][x]))
 
     def __contains__(self, item: CellPosition) -> bool:

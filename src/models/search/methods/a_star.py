@@ -3,12 +3,18 @@ from typing import Optional, List, Tuple, Set
 
 from src.functions.measure import measure
 from src.models.base import T
-from src.models.search.search_function import SearchFunction, SearchResponse
+from src.models.problem.search_problem import SearchProblem
+from src.models.search.heuristic_function import HeuristicFunction
+from src.models.search.search_function import SearchFunction, SearchResponse, ExternalCallbackSearch
 
 PriorityQueueItem = Tuple[float, Tuple[T, List[T]]]
 
 
-class UniformCostSearch(SearchFunction):
+class AStar(SearchFunction):
+
+    def __init__(self, problem: SearchProblem[T], heuristic: HeuristicFunction, step_callback: Optional[ExternalCallbackSearch] = None):
+        super().__init__(problem, step_callback)
+        self.heuristic = heuristic
 
     @measure
     def solve(self) -> Optional[SearchResponse]:
@@ -41,7 +47,10 @@ class UniformCostSearch(SearchFunction):
                     continue
 
                 moves = actions + [child_state]
-                cost = self.problem.calculate_cost(moves)
+
+                g_cost = self.problem.calculate_cost(moves)
+                h_cost = self.heuristic.calculate(child_state, self.problem.goal_state())
+                cost = g_cost + h_cost
                 frontier.put((cost, (child_state, moves)))
                 frontier_set.add(child_state)
 

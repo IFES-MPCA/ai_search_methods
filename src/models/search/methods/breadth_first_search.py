@@ -1,3 +1,5 @@
+import queue
+from queue import Queue
 from typing import List, Set, Optional, Tuple
 
 from src.functions.measure import measure
@@ -7,21 +9,21 @@ from src.models.search.search_function import SearchFunction, SearchResponse
 State = Tuple[T, List[T]]
 
 
-class DepthFirstSearch(SearchFunction):
+class BreadthFirstSearch(SearchFunction):
 
     @measure
     def solve(self) -> Optional[SearchResponse]:
-        frontier: List[State] = []
+        frontier: Queue[State] = queue.Queue()
         frontier_set: Set[T] = set()
         visited: Set[T] = set()
         actions: List[T] = []
 
         current_state: T = self.problem.start_state()
         frontier_set.add(current_state)
-        frontier.append((current_state, actions))
+        frontier.put((current_state, actions))
 
         while frontier:
-            current_state, actions = frontier.pop()
+            current_state, actions = frontier.get()
             frontier_set.remove(current_state)
 
             if current_state in visited or current_state in frontier_set:
@@ -37,9 +39,9 @@ class DepthFirstSearch(SearchFunction):
                 if child_state in visited or child_state in frontier_set:
                     continue
 
-                frontier.append((child_state, actions + [child_state]))
+                frontier.put((child_state, actions + [child_state]))
                 frontier_set.add(child_state)
 
             if self.on_step:
-                frontier_cells = [item for item, path in frontier]
+                frontier_cells = [item for item, path in frontier.queue]
                 self.on_step(frontier_cells, visited)
