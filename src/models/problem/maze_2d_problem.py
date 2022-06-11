@@ -19,14 +19,17 @@ class Maze2DProblem(SearchProblem[Cell]):
         self.maze.set_cell(start)
         self.maze.set_cell(goal)
 
+    def hashify(self, state: Cell) -> int:
+        return hash(state.position)
+
     def start_state(self) -> Cell:
         return self.start
 
     def is_goal_state(self, state: Cell) -> bool:
-        return state.type == CellType.GOAL or state.position == self.goal.position
+        return state.position == self.goal.position
 
     def calculate_cost(self, actions: List[Cell]) -> int:
-        index_range = range(len(actions) - 2)
+        index_range = range(len(actions) - 1)
         return sum([calc_euclidian_distance(actions[i].position, actions[i + 1].position) for i in index_range])
 
     def get_successors(self, state: Cell) -> Iterable[Cell]:

@@ -1,9 +1,13 @@
 import random
 from collections import deque
 from math import inf, sqrt
+from typing import Iterable
 
 from src.models.cell import Cell
-from src.search_methods.depth_first_search import DepthFirstSearch
+from src.models.problem.maze_2d_problem import Maze2DProblem
+from src.models.problem.search_problem import SearchProblem
+from src.models.search.methods.uniform_cost_search import UniformCostSearch
+from src.models.search.search_function import CallbackSearch
 from viewer import MazeViewer
 
 
@@ -147,8 +151,8 @@ def breadth_first_search(labirinto, inicio, goal, viewer):
 
 def main():
     SEED = 42  # coloque None no lugar do 42 para deixar aleatorio
-    N_LINHAS = 10
-    N_COLUNAS = 10
+    N_LINHAS = 20
+    N_COLUNAS = N_LINHAS
     INICIO = Celula(y=0, x=0, anterior=None)
     GOAL = Celula(y=N_LINHAS - 1, x=N_COLUNAS - 1, anterior=None)
 
@@ -161,20 +165,27 @@ def main():
     labirinto = gera_labirinto(N_LINHAS, N_COLUNAS, INICIO, GOAL)
 
     viewer = MazeViewer(labirinto, INICIO, GOAL,
-                        step_time_miliseconds=100, zoom=20)
+                        step_time_miliseconds=1, zoom=10)
 
     INICIO = Cell(y=0, x=0, previous=None)
     GOAL = Cell(y=N_LINHAS - 1, x=N_COLUNAS - 1, previous=None)
-    dfs = DepthFirstSearch(viewer, INICIO, GOAL)
 
-    r = dfs.search()
+    problem: SearchProblem[Cell] = Maze2DProblem(viewer, INICIO, GOAL)
+
+    def on_step_callback(generated: Iterable[Cell], expanded: Iterable[Cell]):
+        viewer.update(generated=[g for g in generated], expanded=[e for e in expanded])
+
+    on_step: CallbackSearch[Cell] = on_step_callback
+    dfs: UniformCostSearch[Cell] = UniformCostSearch(problem, on_step)
+
+    r = dfs.solve()
+
     print(r.path)
-
     viewer.update(path=r.path)
     viewer.pause()
-
-    print("OK!")
     return 0
+
+
 
 
 if __name__ == "__main__":

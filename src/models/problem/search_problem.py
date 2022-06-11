@@ -7,6 +7,10 @@ T = TypeVar('T')
 class SearchProblem(ABC, Generic[T]):
 
     @abstractmethod
+    def hashify(self, state: T) -> int:
+        pass
+
+    @abstractmethod
     def start_state(self) -> T:
         pass
 

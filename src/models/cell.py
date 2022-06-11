@@ -25,5 +25,17 @@ class Cell:
         self.type = cell_type if cell_type else CellType.FREE
         self.position: CellPosition = (x, y)
 
-    def __repr__(self) -> str:
-        return str(self.position)
+    def __eq__(self, other: 'Cell') -> bool:
+        return self.position == other.position
+
+    def __lt__(self, other: 'Cell') -> bool:
+        return (self.x < other.x) and (self.y < other.y)
+
+    def __gt__(self, other: 'Cell') -> bool:
+        return (self.x > other.x) and (self.y > other.y)
+
+    def __hash__(self) -> int:
+        return hash(self.position)
+
+    def __repr__(self):
+        return f'(x: {self.x}, y: {self.y})'
