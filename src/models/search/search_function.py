@@ -3,12 +3,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List, Iterable, Optional, Callable, Generic
 
-from src.functions.measure import measure
 from src.models.base import T
 from src.models.problem.search_problem import SearchProblem
 
 CallbackSearch = Callable[[Iterable[T], Iterable[T]], None]
-ExternalCallbackSearch = Callable[[Iterable[T], Iterable[T]], None]
+ExternalCallback = Callable[[Iterable[T], Iterable[T]], None]
 
 
 class SearchResponse:
@@ -20,7 +19,7 @@ class SearchResponse:
 
 class SearchFunction(ABC, Generic[T]):
 
-    def __init__(self, problem: SearchProblem[T], step_callback: Optional[ExternalCallbackSearch] = None):
+    def __init__(self, problem: SearchProblem[T], step_callback: Optional[ExternalCallback] = None):
         """
         Inst
         :param problem: Callback que recebe a fronteira e os nós já visitados.
@@ -31,6 +30,5 @@ class SearchFunction(ABC, Generic[T]):
         self.on_step = step_callback
 
     @abstractmethod
-    @measure
     def solve(self) -> Optional[SearchResponse]:
         pass

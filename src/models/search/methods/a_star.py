@@ -5,14 +5,14 @@ from src.functions.measure import measure
 from src.models.base import T
 from src.models.problem.search_problem import SearchProblem
 from src.models.search.heuristic_function import HeuristicFunction
-from src.models.search.search_function import SearchFunction, SearchResponse, ExternalCallbackSearch
+from src.models.search.search_function import SearchFunction, SearchResponse, ExternalCallback
 
 PriorityQueueItem = Tuple[float, Tuple[T, List[T]]]
 
 
 class AStar(SearchFunction):
 
-    def __init__(self, problem: SearchProblem[T], heuristic: HeuristicFunction, step_callback: Optional[ExternalCallbackSearch] = None):
+    def __init__(self, problem: SearchProblem[T], heuristic: HeuristicFunction, step_callback: Optional[ExternalCallback] = None):
         super().__init__(problem, step_callback)
         self.heuristic = heuristic
 

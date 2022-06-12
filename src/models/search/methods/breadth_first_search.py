@@ -22,7 +22,7 @@ class BreadthFirstSearch(SearchFunction):
         frontier_set.add(current_state)
         frontier.put((current_state, actions))
 
-        while frontier:
+        while not frontier.empty():
             current_state, actions = frontier.get()
             frontier_set.remove(current_state)
 
