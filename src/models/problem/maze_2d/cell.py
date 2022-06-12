@@ -12,19 +12,17 @@ class CellType(Enum):
 
 
 class Cell:
-    def __init__(self, y: int, x: int, previous: 'Cell' = None,
-                 cell_type: CellType = None):
+    def __init__(self, y: int, x: int, cell_type: CellType = None):
         """
         Inicializa uma célula que representa um bloco do labirinto.
         :param y: posição vertical da célula.
         :param x: posição horizontal da célula.
-        :param previous: célula precedente à célula atual.
+        :param cell_type: tipo da célula.
         """
         self.y = y
         self.x = x
         self.type = cell_type if cell_type else CellType.FREE
         self.position: CellPosition = (x, y)
-        self.previous = previous
 
     def __eq__(self, other: 'Cell') -> bool:
         return self.position == other.position

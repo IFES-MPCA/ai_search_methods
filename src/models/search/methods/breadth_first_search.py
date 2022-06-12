@@ -12,7 +12,7 @@ State = Tuple[T, List[T]]
 class BreadthFirstSearch(SearchFunction):
 
     @measure
-    def solve(self) -> Optional[SearchResponse]:
+    def solve(self, step_callback=None) -> Optional[SearchResponse]:
         frontier: Queue[State] = queue.Queue()
         frontier_set: Set[T] = set()
         visited: Set[T] = set()
@@ -42,6 +42,6 @@ class BreadthFirstSearch(SearchFunction):
                 frontier.put((child_state, actions + [child_state]))
                 frontier_set.add(child_state)
 
-            if self.on_step:
+            if step_callback:
                 frontier_cells = [item for item, path in frontier.queue]
-                self.on_step(frontier_cells, visited)
+                step_callback(frontier_cells, visited)

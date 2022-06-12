@@ -50,6 +50,6 @@ class Maze2DProblem(SearchProblem[Cell]):
             (state.x + 1, state.y),
         ])
         return [
-            Cell(position[1], position[0], state, self.maze.get_cell(position).type)
+            Cell(position[1], position[0], self.maze.get_cell(position).type)
             for position in all_positions if self.__valid_position__(position)
         ]

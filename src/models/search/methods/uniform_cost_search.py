@@ -11,7 +11,7 @@ PriorityQueueItem = Tuple[float, Tuple[T, List[T]]]
 class UniformCostSearch(SearchFunction):
 
     @measure
-    def solve(self) -> Optional[SearchResponse]:
+    def solve(self, step_callback=None) -> Optional[SearchResponse]:
         frontier: PriorityQueue[PriorityQueueItem] = PriorityQueue()
         frontier_set: Set[T] = set()
         visited: Set[T] = set()
@@ -45,6 +45,6 @@ class UniformCostSearch(SearchFunction):
                 frontier.put((cost, (child_state, moves)))
                 frontier_set.add(child_state)
 
-            if self.on_step:
+            if step_callback:
                 frontier_cells = [item[0] for cost, item in frontier.queue]
-                self.on_step(frontier_cells, visited)
+                step_callback(frontier_cells, visited)

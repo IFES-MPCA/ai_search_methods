@@ -18,7 +18,7 @@ class Hashable2DMaze:
     def __generate__(self, n_lines: int, n_columns: int):
         for y in range(n_lines):
             for x in range(n_columns):
-                self.maze[(x, y)] = Cell(y, x)
+                self.maze[(x, y)] = Cell(x=x, y=y)
 
     def __insert_obstacles__(self, n_rows: int, n_columns: int, chance: float = 0.25, seed=None):
         import random
@@ -50,6 +50,6 @@ class Hashable2DMaze:
         ]
 
         return [
-            Cell(pos[1], pos[0], cell, self.get_cell(pos).type) for pos in all_positions if
+            Cell(pos[1], pos[0], self.get_cell(pos).type) for pos in all_positions if
             pos in self.maze and self.maze[pos].type != CellType.OBSTACLE
         ]
