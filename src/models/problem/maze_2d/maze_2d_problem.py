@@ -16,9 +16,6 @@ class Maze2DProblem(SearchProblem[Cell]):
         self.maze.set_cell(start)
         self.maze.set_cell(goal)
 
-    def hashify(self, state: Cell) -> int:
-        return hash(state.position)
-
     def start_state(self) -> Cell:
         return self.start
 

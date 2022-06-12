@@ -68,10 +68,12 @@ class MazeViewer:
         cv2.imshow("view", maze_img)
         cv2.waitKey(self.__delay__)
 
-    def pause(self) -> None:
+    @staticmethod
+    def pause() -> None:
         cv2.waitKey(-1)
 
-    def __apply_zoom__(self, maze_img: ndarray, zoom: int = 10) -> ndarray:
+    @staticmethod
+    def __apply_zoom__(maze_img: ndarray, zoom: int = 10) -> ndarray:
         lines, columns, _ = maze_img.shape
         big_img = np.zeros((lines * zoom, columns * zoom, 3))
 
@@ -85,7 +87,8 @@ class MazeViewer:
 
         return big_img
 
-    def __draw_grid__(self, maze_img: ndarray, zoom: int):
+    @staticmethod
+    def __draw_grid__(maze_img: ndarray, zoom: int):
         lines, columns, _ = maze_img.shape
         black = (0, 0, 0)
 
@@ -95,6 +98,7 @@ class MazeViewer:
         for j in range(0, lines, zoom):
             cv2.line(maze_img, (0, j), (columns, j), color=black, thickness=1)
 
-    def __draw_cells__(self, maze_img: ndarray, cells: Iterable[Cell], color: Tuple[int, int, int]):
+    @staticmethod
+    def __draw_cells__(maze_img: ndarray, cells: Iterable[Cell], color: Tuple[int, int, int]):
         for cell in cells:
             maze_img[cell.y, cell.x] = color
