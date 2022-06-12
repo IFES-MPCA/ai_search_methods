@@ -1,6 +1,6 @@
 from typing import List, Optional, Tuple, Dict
 
-from src.models.cell import CellType, Cell, CellPosition
+from src.models.problem.maze_2d.cell import CellType, Cell, CellPosition
 
 
 class Hashable2DMaze:

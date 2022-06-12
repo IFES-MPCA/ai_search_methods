@@ -1,5 +1,5 @@
 from src.functions.distance_2d import calc_euclidian_distance
-from src.models.cell import Cell
+from src.models.problem.maze_2d.cell import Cell
 from src.models.search.heuristic_function import HeuristicFunction
 
 

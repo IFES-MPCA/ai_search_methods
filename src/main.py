@@ -1,7 +1,7 @@
 from typing import Iterable
 
-from src.models.cell import Cell
 from src.models.maze.hashable_2d_maze import Hashable2DMaze
+from src.models.problem.maze_2d.cell import Cell
 from src.models.problem.maze_2d.maze_2d_heuristics import ManhattanCost
 from src.models.problem.maze_2d.maze_2d_problem import Maze2DProblem
 from src.models.problem.search_problem import SearchProblem
@@ -20,7 +20,7 @@ def main():
     goal = Cell(y=n_lines - 1, x=n_columns - 1)
 
     maze_2d = Hashable2DMaze(n_lines, n_columns, seed, obstacles_percent)
-    viewer = MazeViewer(start, goal, maze_2d, 10, 2)
+    viewer = MazeViewer(start, goal, maze_2d, 5, 2)
     problem: SearchProblem[Cell] = Maze2DProblem(maze_2d, start, goal)
 
     def on_step_callback(generated: Iterable[Cell], expanded: Iterable[Cell]):

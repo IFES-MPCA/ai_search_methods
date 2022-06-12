@@ -1,7 +1,7 @@
 from typing import Iterable, List
 
-from src.models.cell import Cell, CellType, CellPosition
 from src.models.maze.hashable_2d_maze import Hashable2DMaze
+from src.models.problem.maze_2d.cell import Cell, CellType, CellPosition
 from src.models.problem.search_problem import SearchProblem
 
 
