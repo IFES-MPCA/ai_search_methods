@@ -2,7 +2,7 @@ import queue
 from queue import Queue
 from typing import List, Set, Optional, Tuple
 
-from src.functions.measure import measure
+from src.application.util.measure import measure
 from src.models.base import T
 from src.models.search.search_function import SearchFunction, SearchResponse
 

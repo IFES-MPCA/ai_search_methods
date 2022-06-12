@@ -1,7 +1,7 @@
 from queue import PriorityQueue
 from typing import Optional, List, Tuple, Set
 
-from src.functions.measure import measure
+from src.application.util.measure import measure
 from src.models.base import T
 from src.models.problem.search_problem import SearchProblem
 from src.models.search.heuristic_function import HeuristicFunction
