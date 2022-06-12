@@ -1,6 +1,5 @@
 from typing import Iterable, List
 
-from src.functions.distance_2d import calc_euclidian_distance
 from src.models.cell import Cell, CellType, CellPosition
 from src.models.maze.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.search_problem import SearchProblem
@@ -31,7 +30,7 @@ class Maze2DProblem(SearchProblem[Cell]):
 
     def calculate_cost(self, actions: List[Cell]) -> int:
         index_range = range(len(actions) - 1)
-        return sum([calc_euclidian_distance(actions[i].position, actions[i + 1].position) for i in index_range])
+        return sum((actions[i] - actions[i + 1]) for i in index_range)
 
     def __valid_position__(self, position: CellPosition) -> bool:
         if position[0] < 0 or position[0] >= self.maze.columns:

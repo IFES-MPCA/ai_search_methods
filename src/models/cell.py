@@ -24,6 +24,7 @@ class Cell:
         self.x = x
         self.type = cell_type if cell_type else CellType.FREE
         self.position: CellPosition = (x, y)
+        self.previous = previous
 
     def __eq__(self, other: 'Cell') -> bool:
         return self.position == other.position
@@ -39,3 +40,6 @@ class Cell:
 
     def __repr__(self):
         return f'(x: {self.x}, y: {self.y})'
+
+    def __sub__(self, other: 'Cell') -> float:
+        return 1 if (abs(self.x - other.x) + abs(self.y - other.y)) == 1 else 1.4142135623730951
