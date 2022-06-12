@@ -19,6 +19,8 @@ class MazeBlockColors:
 class MazeViewer:
 
     def __init__(self, start: Cell, goal: Cell, maze: Hashable2DMaze, zoom=50, step_time_milliseconds=-1):
+        self.lines = maze.lines
+        self.columns = maze.columns
         self.__start__ = start
         self.__goal__ = goal
         self.__maze__ = maze
@@ -27,9 +29,7 @@ class MazeViewer:
         self.__generate_maze_image__()
 
     def __generate_maze_image__(self):
-        lines = self.__maze__.lines
-        columns = self.__maze__.columns
-        maze_img = np.array(lines * [columns * [0]]).astype(np.uint8) * 255
+        maze_img = np.array(self.lines * [self.columns * [0]]).astype(np.uint8) * 255
 
         # invert black and white pixels so that obstacles are black and free areas are white.
         maze_img = 255 - maze_img

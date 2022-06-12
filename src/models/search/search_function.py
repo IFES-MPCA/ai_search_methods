@@ -10,10 +10,11 @@ ExternalCallback = Callable[[Iterable[T], Iterable[T]], None]
 
 
 class SearchResponse(Generic[T]):
-    def __init__(self, path: List[T], cost: int, steps_count: int):
+    def __init__(self, path: List[T], cost: int, generated: int, expanded: int):
         self.path = path
-        self.cost = cost
-        self.steps_count = steps_count
+        self.path_cost = cost
+        self.generated = generated
+        self.expanded = expanded
 
 
 class SearchFunction(ABC, Generic[T]):

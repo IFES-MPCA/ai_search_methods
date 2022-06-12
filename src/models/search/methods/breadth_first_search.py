@@ -2,7 +2,6 @@ import queue
 from queue import Queue
 from typing import List, Set, Optional, Tuple
 
-from src.application.util.measure import measure
 from src.models.base import T
 from src.models.search.search_function import SearchFunction, SearchResponse
 
@@ -11,15 +10,13 @@ State = Tuple[T, List[T]]
 
 class BreadthFirstSearch(SearchFunction):
 
-    @measure
     def solve(self, step_callback=None) -> Optional[SearchResponse]:
-        frontier: Queue[State] = queue.Queue()
-        frontier_set: Set[T] = set()
-        visited: Set[T] = set()
-        actions: List[T] = []
-
         current_state: T = self.problem.start_state()
-        frontier_set.add(current_state)
+
+        frontier_set: Set[T] = {current_state}
+        visited: Set[T] = set()
+        actions: List[T] = [current_state]
+        frontier: Queue[State] = queue.Queue()
         frontier.put((current_state, actions))
 
         while not frontier.empty():
@@ -30,7 +27,7 @@ class BreadthFirstSearch(SearchFunction):
                 continue
 
             if self.problem.is_goal_state(current_state):
-                return SearchResponse(actions, len(actions), len(visited))
+                return SearchResponse(actions, len(actions), len(frontier_set) + len(visited), len(visited))
 
             visited.add(current_state)
             neighbors = self.problem.get_successors(current_state)
