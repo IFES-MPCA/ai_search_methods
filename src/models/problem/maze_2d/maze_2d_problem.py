@@ -2,20 +2,18 @@ from typing import Iterable, List
 
 from src.functions.distance_2d import calc_euclidian_distance
 from src.models.cell import Cell, CellType, CellPosition
-from src.models.maze.default_2d_maze import DefaultMazeWithViewer
 from src.models.maze.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.search_problem import SearchProblem
 
 
 class Maze2DProblem(SearchProblem[Cell]):
 
-    def __init__(self, default_maze: DefaultMazeWithViewer, start: Cell, goal: Cell):
-        self.maze: Hashable2DMaze = Hashable2DMaze(default_maze.labirinto)
+    def __init__(self, maze: Hashable2DMaze, start: Cell, goal: Cell):
+        self.maze: Hashable2DMaze = maze
         start.type = CellType.START
         goal.type = CellType.GOAL
         self.start = start
         self.goal = goal
-        self.viewer = default_maze
         self.maze.set_cell(start)
         self.maze.set_cell(goal)
 

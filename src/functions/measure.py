@@ -12,12 +12,12 @@ def measure(function: Callable) -> Callable:
     @wraps(function)
     def __time_it__(*args, **kwargs):
         start = int(round(time() * 1000))
-
         try:
             return function(*args, **kwargs)
 
         finally:
             end_ = int(round(time() * 1000)) - start
-            print(f"Tempo de execução: {end_ if end_ > 0 else 0} ms")
+            class_name, fn_name = function.__qualname__.split('.')
+            print(f"{class_name} -> {end_ if end_ > 0 else 0} ms")
 
     return __time_it__

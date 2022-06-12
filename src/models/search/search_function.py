@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List, Iterable, Optional, Callable, Generic
 
+from src.functions.measure import measure
 from src.models.base import T
 from src.models.problem.search_problem import SearchProblem
 
@@ -30,5 +31,6 @@ class SearchFunction(ABC, Generic[T]):
         self.on_step = step_callback
 
     @abstractmethod
+    @measure
     def solve(self) -> Optional[SearchResponse]:
         pass

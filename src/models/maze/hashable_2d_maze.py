@@ -1,26 +1,24 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple, Dict
 
 from src.models.cell import CellType, Cell, CellPosition
 
 
 class Hashable2DMaze:
 
-    def __init__(self, default_maze: List[List[int]]):
-        self.__maze = {}
-        self.lines = len(default_maze)
-        self.columns = len(default_maze[0])
-
-        for y in range(self.lines):
-            for x in range(self.columns):
-                self.__maze[(x, y)] = Cell(y, x, None, CellType(default_maze[y][x]))
+    def __init__(self, n_lines: int, n_columns: int, seed=None, obstacles_chance: float = 0.25):
+        self.lines = n_lines
+        self.columns = n_columns
+        self.maze: Dict[Tuple[int, int], Cell] = {}
+        self.__generate__(n_lines, n_columns)
+        self.__insert_obstacles__(n_lines, n_columns, obstacles_chance, seed)
 
     def __contains__(self, item: CellPosition) -> bool:
-        return item in self.__maze
+        return item in self.maze
 
     def __generate__(self, n_lines: int, n_columns: int):
         for y in range(n_lines):
             for x in range(n_columns):
-                self.__maze[(x, y)] = Cell(y, x)
+                self.maze[(x, y)] = Cell(y, x)
 
     def __insert_obstacles__(self, n_lines: int, n_columns: int, chance: float = 0.25, seed=None):
         import random
@@ -33,13 +31,13 @@ class Hashable2DMaze:
             self.__insert_obstacle__(x, y)
 
     def __insert_obstacle__(self, x: int, y: int):
-        self.__maze[(x, y)].type = CellType.OBSTACLE
+        self.maze[(x, y)].type = CellType.OBSTACLE
 
     def set_cell(self, cell: Cell):
-        self.__maze[(cell.x, cell.y)] = cell
+        self.maze[(cell.x, cell.y)] = cell
 
     def get_cell(self, position: CellPosition) -> Optional[Cell]:
-        return self.__maze[position]
+        return self.maze[position]
 
     def get_neighbors(self, cell: Cell) -> List[Cell]:
         all_positions: List[CellPosition] = [
@@ -55,5 +53,5 @@ class Hashable2DMaze:
 
         return [
             Cell(pos[1], pos[0], cell, self.get_cell(pos).type) for pos in all_positions if
-            pos in self.__maze and self.__maze[pos].type != CellType.OBSTACLE
+            pos in self.maze and self.maze[pos].type != CellType.OBSTACLE
         ]
