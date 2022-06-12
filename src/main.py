@@ -40,6 +40,9 @@ def run(method: SearchFunction[Cell], viewer: MazeViewer, enable_visualization=F
             search_response = response.value
             executions_time.append(response.time_in_ms)
 
+        if not search_response:
+            raise Exception("Não foi possível encontrar o caminho. Verifique se o labirinto é solúvel.")
+
     avg_time = sum(executions_time) / times
     std_time = statistics.pstdev(executions_time)
     cost = search_response.path_cost
@@ -66,8 +69,9 @@ def main():
         dfs: SearchFunction[Cell] = DepthFirstSearch(problem)
         ucs: SearchFunction[Cell] = UniformCostSearch(problem)
         a_star: SearchFunction[Cell] = AStar(problem, heuristic)
-        all_methods = [a_star]
+        all_methods = [bfs, dfs, ucs, a_star]
 
+        # Passe True para habilitar a visualização de cada algoritmo
         for method in all_methods:
             run(method, viewer, enable_visualization=False)
 
@@ -75,4 +79,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print(measure(main).time_in_ms)
+    main()
