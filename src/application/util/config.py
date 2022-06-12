@@ -4,7 +4,7 @@ class Config:
     """
 
     # Número de execuções para cada método de busca
-    n_executions = 50
+    n_executions = 100
 
     # Seed para manter reproduzível a geração de obstáculos
     seed = 42
