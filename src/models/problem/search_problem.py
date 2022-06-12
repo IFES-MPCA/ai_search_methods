@@ -7,10 +7,6 @@ T = TypeVar('T')
 class SearchProblem(ABC, Generic[T]):
 
     @abstractmethod
-    def hashify(self, state: T) -> int:
-        pass
-
-    @abstractmethod
     def start_state(self) -> T:
         pass
 
@@ -23,7 +19,7 @@ class SearchProblem(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    def calculate_cost(self, current_state: T) -> int:
+    def calculate_cost(self, current_state: T) -> float:
         pass
 
     @abstractmethod

@@ -42,8 +42,6 @@ class MazeViewer:
                 maze_img[position[1], position[0]] = (0, 0, 0)
 
         self.__maze_img__: ndarray = maze_img
-        cv2.imshow("view", self.__maze_img__)
-        cv2.waitKey(self.__delay__)
 
     def update(self, generated=None, expanded=None, path=None):
         if path is None:
