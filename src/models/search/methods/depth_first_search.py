@@ -12,16 +12,19 @@ class DepthFirstSearch(SearchFunction):
     @measure
     def solve(self) -> Optional[SearchResponse]:
         frontier: List[State] = []
+        frontier_set: Set[T] = set()
         visited: Set[T] = set()
         actions: List[T] = []
 
         current_state: T = self.problem.start_state()
+        frontier_set.add(current_state)
         frontier.append((current_state, actions))
 
         while frontier:
             current_state, actions = frontier.pop()
+            frontier_set.remove(current_state)
 
-            if current_state in visited or current_state in frontier:
+            if current_state in visited or current_state in frontier_set:
                 continue
 
             if self.problem.is_goal_state(current_state):
@@ -31,10 +34,11 @@ class DepthFirstSearch(SearchFunction):
             neighbors = self.problem.get_successors(current_state)
 
             for child_state in neighbors:
-                if child_state in visited or child_state in frontier:
+                if child_state in visited or child_state in frontier_set:
                     continue
 
                 frontier.append((child_state, actions + [child_state]))
+                frontier_set.add(child_state)
 
             if self.on_step:
                 frontier_cells = [item for item, path in frontier]
