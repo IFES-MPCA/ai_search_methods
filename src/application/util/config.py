@@ -4,7 +4,7 @@ class Config:
     """
 
     # Número de execuções para cada método de busca
-    n_executions = 10
+    n_executions = 50
 
     # Seed para manter reproduzível a geração de obstáculos
     seed = 42
@@ -13,4 +13,4 @@ class Config:
     obstacles_percentage = 0.25
 
     # Variações de dimensões do labirinto quadrado (em linhas e colunas)
-    maze_sizes = [50, 100, 200, 300]
+    maze_sizes = [100, 200, 300]
