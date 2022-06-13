@@ -1,6 +1,6 @@
-método,média (ms),desvio (ms),desvio (%),custo caminho,nós gerados,nós expandidos
-BreadthFirstSearch,691.73,27.38,3.96,222,31195,31195
-DepthFirstSearch,723.74,57.89,8.00,239,12492,11909
-UniformCostSearch,2621.36,245.35,9.36,222,31195,31195
-AStar (Heurística Manhattan),47.14,4.94,10.47,231,804,253
-AStar (Heurística Euclidiana),504.64,30.11,5.97,226,7633,6931
+método,média (ms),desvio (ms),desvio (%),custo caminho,tamanho caminho,nós gerados,nós expandidos
+Breath First Search,673.60,30.75,4.56,297.63,222,31195,31195
+Uniform Cost Search,2531.22,160.43,6.34,295.14,222,31195,31195
+A* (Manhattan),45.31,9.20,20.31,303.73,231,804,253
+A* (Euclidian),513.89,29.34,5.71,297.49,226,7633,6931
+Depth First Search,766.64,57.55,7.51,313.39,239,12492,11909
