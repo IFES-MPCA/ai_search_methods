@@ -31,7 +31,7 @@ class AStar(SearchFunction):
             actions = path[1]
 
             if self.problem.is_goal_state(current_state):
-                return SearchResponse(actions, self.problem.calculate_cost(actions), len(frontier_set) + len(visited), len(visited))
+                return SearchResponse(actions, self.problem.calculate_cost(actions), len(frontier_set), len(visited))
 
             if current_state in visited or current_state in frontier_set:
                 continue

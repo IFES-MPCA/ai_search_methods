@@ -27,7 +27,7 @@ class BreadthFirstSearch(SearchFunction):
                 continue
 
             if self.problem.is_goal_state(current_state):
-                return SearchResponse(actions, self.problem.calculate_cost(actions), len(frontier_set) + len(visited), len(visited))
+                return SearchResponse(actions, self.problem.calculate_cost(actions), len(frontier_set), len(visited))
 
             visited.add(current_state)
             neighbors = self.problem.get_successors(current_state)
