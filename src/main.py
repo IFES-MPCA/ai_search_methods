@@ -6,7 +6,7 @@ from src.application.util.config import Config
 from src.application.util.measure import measure
 from src.models.maze.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.maze_2d.cell import Cell, CellType
-from src.models.problem.maze_2d.maze_2d_heuristics import EuclidianCost
+from src.models.problem.maze_2d.maze_2d_heuristics import EuclidianCost, ManhattanCost
 from src.models.problem.maze_2d.maze_2d_problem import Maze2DProblem
 from src.models.problem.search_problem import SearchProblem
 from src.models.search.methods.a_star import AStar
@@ -17,7 +17,7 @@ from src.models.search.search_function import SearchFunction, SearchResponse
 from src.ui.maze_viewer import MazeViewer
 
 
-def run(method: SearchFunction[Cell], viewer: MazeViewer, enable_visualization=False):
+def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, enable_visualization=False):
     def on_step_callback(generated: Iterable[Cell], expanded: Iterable[Cell]):
         viewer.update(generated, expanded)
 
@@ -45,14 +45,25 @@ def run(method: SearchFunction[Cell], viewer: MazeViewer, enable_visualization=F
 
     avg_time = sum(executions_time) / times
     std_time = statistics.pstdev(executions_time)
+    path = search_response.path
     cost = search_response.path_cost
     n_generated = search_response.generated
     n_expanded = search_response.expanded
-    results_reporter.append_line(method.__class__.__name__, avg_time, std_time, cost, n_generated, n_expanded)
+    results_reporter.append_line(method_name, avg_time, std_time, cost, len(path), n_generated, n_expanded)
+
+
+def print_config(size: int):
+    print('Executando com:')
+    print(f'- Número de execuções: {Config.n_executions}')
+    print(f'- Dimensão labirinto: {size}x{size}')
+    print(f'- Seed: {Config.seed}')
+    print(f'- Porcentagem de obstáculos: {Config.obstacles_percentage * 100}%')
+    print('-----')
 
 
 def main():
     for size in Config.maze_sizes:
+        print_config(size)
         n_lines = size
         n_columns = size
 
@@ -63,18 +74,27 @@ def main():
         viewer = MazeViewer(start, goal, maze_2d, 5, 1)
         problem: SearchProblem[Cell] = Maze2DProblem(maze_2d, start, goal)
 
-        heuristic = EuclidianCost()
+        euclidian_heuristic = EuclidianCost()
+        manhattan_heuristic = ManhattanCost()
 
         bfs: SearchFunction[Cell] = BreadthFirstSearch(problem)
         dfs: SearchFunction[Cell] = DepthFirstSearch(problem)
         ucs: SearchFunction[Cell] = UniformCostSearch(problem)
-        a_star: SearchFunction[Cell] = AStar(problem, heuristic)
-        all_methods = [bfs, dfs, ucs, a_star]
+        a_star_euclidian: SearchFunction[Cell] = AStar(problem, euclidian_heuristic)
+        a_star_manhattan: SearchFunction[Cell] = AStar(problem, manhattan_heuristic)
+        all_methods = [
+            (bfs, 'Breath First Search'),
+            (ucs, 'Uniform Cost Search'),
+            (a_star_manhattan, 'A* (Manhattan)'),
+            (a_star_euclidian, 'A* (Euclidian)'),
+            (dfs, 'Depth First Search')
+        ]
 
         # Passe True para habilitar a visualização de cada algoritmo
-        for method in all_methods:
-            run(method, viewer, enable_visualization=False)
+        for method, name in all_methods:
+            run(method, name, viewer, enable_visualization=False)
 
+    print('Fim da execução')
     return 0
 
 
