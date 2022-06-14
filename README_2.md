@@ -22,22 +22,36 @@ Dado um nó inicial ("X", por exemplo), o BFS explora todos os seus vizinhos at�
 vizinho verificado, seus vizinhos são adicionados à fila para repetirem o processo. Seu comportamento se resume a uma
 busca exaustiva.
 
+<img src="C:\Users\AEVO\Desktop\bfs.gif" width="150"/>
+
 ### Depth-First Search (DFS)
 
 Dado um nó inicial ("X", por exemplo), o DFS explora todo o ramo até encontrar o estado objetivo ou até findar o ramo
 (encontrar um nó folha, sem filhos). Caso finde o ramo sem encontrar o objetivo, o DFS retrocede e
 explora os ramos dos nós vizinhos do nó expandido anteriormente ("X").
 
+<img src="C:\Users\AEVO\Desktop\dfs.gif" width="150"/>
+
 ### Uniform-Cost Search (UCS)
 
 O UCS pode ser visto como uma extensão do BFS. Ao invés de expandir todos os nós vizinhos de um nó, o UCS prioriza os
 nós com menor custo g, além de verificar se é possível melhorar o caminho até um nó já visto, desde que esse caminho seja menos custoso.
+
+<img src="C:\Users\AEVO\Desktop\ucs.gif" width="150"/>
 
 ### A* (A Star)
 
 O diferencial deste algoritmo é que ele considera não só o custo g (nó atual até o nó objetivo) mas também o custo h
 (estado atual até o objetivo), entregue por uma heurística. Por esse diferencial, o A* mescla velocidade de execução com
 o encontro de um caminho ótimo.
+
+Heurística de distância octil:
+
+<img src="C:\Users\AEVO\Desktop\a_star_octil.gif" width="150"/>
+
+Heurística de distância euclidiana:
+
+<img src="C:\Users\AEVO\Desktop\a_star_euclidian.gif" width="150"/>
 
 ## Experimentos
 
@@ -96,7 +110,11 @@ Processador:
 
 ## Resultados
 
-Resultados com execução de labirinto 300x300:
+### Cenário 1: Labirinto 100x100
+
+### Cenário 2: Labirinto 200x200
+
+### Cenário 3: Labirinto 300x300
 
 | método              | média (ms) | desvio (ms) | desvio (%) | custo caminho | tamanho caminho | nós gerados | nós expandidos |
 |---------------------|------------|-------------|------------|---------------|-----------------|-------------|----------------|
