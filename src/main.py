@@ -6,7 +6,7 @@ from src.application.util.config import Config
 from src.application.util.measure import measure
 from src.models.maze.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.maze_2d.cell import Cell, CellType
-from src.models.problem.maze_2d.maze_2d_heuristics import EuclidianCost, ManhattanCost
+from src.models.problem.maze_2d.maze_2d_heuristics import EuclidianCost, OctileCost
 from src.models.problem.maze_2d.maze_2d_problem import Maze2DProblem
 from src.models.problem.search_problem import SearchProblem
 from src.models.search.methods.a_star import AStar
@@ -24,7 +24,6 @@ def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, enab
     times = Config.n_executions
     seed = Config.seed
 
-    results_reporter = ReportResult(times, viewer.lines, viewer.columns, seed)
     executions_time = []
     search_response: SearchResponse = None
 
@@ -43,13 +42,15 @@ def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, enab
         if not search_response:
             raise Exception("Não foi possível encontrar o caminho. Verifique se o labirinto é solúvel.")
 
-    avg_time = sum(executions_time) / times
-    std_time = statistics.pstdev(executions_time)
-    path = search_response.path
-    cost = search_response.path_cost
-    n_generated = search_response.generated
-    n_expanded = search_response.expanded
-    results_reporter.append_line(method_name, avg_time, std_time, cost, len(path), n_generated, n_expanded)
+    if not enable_visualization:
+        results_reporter = ReportResult(times, viewer.lines, viewer.columns, seed)
+        avg_time = sum(executions_time) / times
+        std_time = statistics.pstdev(executions_time)
+        path = search_response.path
+        cost = search_response.path_cost
+        n_generated = search_response.generated
+        n_expanded = search_response.expanded
+        results_reporter.append_line(method_name, avg_time, std_time, cost, len(path), n_generated, n_expanded)
 
 
 def print_config(size: int):
@@ -75,17 +76,17 @@ def main():
         problem: SearchProblem[Cell] = Maze2DProblem(maze_2d, start, goal)
 
         euclidian_heuristic = EuclidianCost()
-        manhattan_heuristic = ManhattanCost()
+        manhattan_heuristic = OctileCost()
 
         bfs: SearchFunction[Cell] = BreadthFirstSearch(problem)
         dfs: SearchFunction[Cell] = DepthFirstSearch(problem)
         ucs: SearchFunction[Cell] = UniformCostSearch(problem)
         a_star_euclidian: SearchFunction[Cell] = AStar(problem, euclidian_heuristic)
-        a_star_manhattan: SearchFunction[Cell] = AStar(problem, manhattan_heuristic)
+        a_star_octil: SearchFunction[Cell] = AStar(problem, manhattan_heuristic)
         all_methods = [
             (bfs, 'Breath First Search'),
             (ucs, 'Uniform Cost Search'),
-            (a_star_manhattan, 'A* (Manhattan)'),
+            (a_star_octil, 'A* (Octile)'),
             (a_star_euclidian, 'A* (Euclidian)'),
             (dfs, 'Depth First Search')
         ]
