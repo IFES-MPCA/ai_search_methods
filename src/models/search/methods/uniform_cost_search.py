@@ -11,7 +11,7 @@ PriorityQueueItem = Tuple[float, T]
 class UniformCostSearch(SearchFunction):
 
     def solve(self, step_callback=None) -> Optional[SearchResponse]:
-        current_state = self.problem.start_state()
+        current_state = self.problem.get_start_state()
 
         # nós que já foram explorados
         closed_states: Set[T] = set()

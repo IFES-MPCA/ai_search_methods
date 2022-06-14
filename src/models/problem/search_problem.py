@@ -7,11 +7,11 @@ T = TypeVar('T')
 class SearchProblem(ABC, Generic[T]):
 
     @abstractmethod
-    def start_state(self) -> T:
+    def get_start_state(self) -> T:
         pass
 
     @abstractmethod
-    def goal_state(self) -> T:
+    def get_goal_state(self) -> T:
         pass
 
     @abstractmethod

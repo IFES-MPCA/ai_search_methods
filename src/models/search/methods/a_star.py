@@ -17,8 +17,8 @@ class AStar(SearchFunction):
         self.heuristic = heuristic
 
     def solve(self, step_callback=None) -> Optional[SearchResponse]:
-        current_state = self.problem.start_state()
-        goal_state = self.problem.goal_state()
+        current_state = self.problem.get_start_state()
+        goal_state = self.problem.get_goal_state()
 
         # nós que já foram explorados
         closed_states: Set[T] = set()

@@ -11,7 +11,7 @@ State = Tuple[T, List[T]]
 class BreadthFirstSearch(SearchFunction):
 
     def solve(self, step_callback=None) -> Optional[SearchResponse]:
-        current_state: T = self.problem.start_state()
+        current_state: T = self.problem.get_start_state()
 
         frontier_set: Set[T] = {current_state}
         visited: Set[T] = set()
