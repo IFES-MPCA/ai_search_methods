@@ -6,6 +6,15 @@ Dado o limite de 1 a 3 páginas, para acessar o repositório com código atualiz
 algoritmos, mais casos de teste, descrição dos códigos e
 diretórios, [clique aqui](https://github.com/IFES-MPCA/ai_search_methods).
 
+## Como executar o código
+
+A partir do diretório do projeto, instale as dependências:
+```shell
+pip install -r requirements.txt
+```
+
+Basta executar o arquivo `main.py`. Para customizar algo da execução para alterar o arquivo main e/ou o `config.py`.
+
 ## Algoritmos
 
 Com exceção do A*, todos são métodos de busca não informada, isto é, não contam com uma heurística para
