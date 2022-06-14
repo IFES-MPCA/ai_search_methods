@@ -25,7 +25,7 @@ class Maze2DProblem(SearchProblem[Cell]):
     def is_goal_state(self, state: Cell) -> bool:
         return state.position == self.goal.position
 
-    def calculate_cost(self, actions: List[Cell]) -> int:
+    def calculate_cost(self, actions: List[Cell]) -> float:
         index_range = range(len(actions) - 1)
         return sum((actions[i] - actions[i + 1]) for i in index_range)
 

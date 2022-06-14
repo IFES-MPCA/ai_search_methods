@@ -19,7 +19,7 @@ class SearchProblem(ABC, Generic[T]):
         pass
 
     @abstractmethod
-    def calculate_cost(self, current_state: T) -> float:
+    def calculate_cost(self, current_state: Iterable[T]) -> float:
         pass
 
     @abstractmethod
