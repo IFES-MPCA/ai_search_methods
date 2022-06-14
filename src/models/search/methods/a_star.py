@@ -1,21 +1,13 @@
 from queue import PriorityQueue
-from typing import Optional, List, Tuple, Set, Dict
+from typing import Optional, Tuple, Set, Dict
 
 from src.models.base import T
 from src.models.problem.search_problem import SearchProblem
 from src.models.search.heuristic_function import HeuristicFunction
 from src.models.search.search_function import SearchFunction, SearchResponse
+from src.models.search.state import reconstruct_path
 
 PriorityQueueItem = Tuple[float, T]
-
-
-def reconstruct_path(predecessor_by_state: Dict[T, T], current_state: T) -> List[T]:
-    final_path = [current_state]
-
-    while current_state in predecessor_by_state:
-        current_state = predecessor_by_state[current_state]
-        final_path.append(current_state)
-    return final_path[::-1]
 
 
 class AStar(SearchFunction):
@@ -33,7 +25,6 @@ class AStar(SearchFunction):
 
         # dicionários para evitar redundância de cálculo de heurística
         g_cost_by_state: Dict[T, float] = {current_state: 0}
-        f_cost_by_state: Dict[T, float] = {current_state: self.heuristic.calculate(current_state, goal_state)}
 
         # dicionário para auxiliar na construção do caminho a partir do nó final
         predecessor_by_state: Dict[T, T] = {}
@@ -41,10 +32,11 @@ class AStar(SearchFunction):
         # uso de set para evitar pesquisa na fila
         states_to_open_set: Set[T] = {current_state}
 
+        # fila de prioridade ordenada pelo custo F (G + H)
         states_to_open: PriorityQueue[PriorityQueueItem] = PriorityQueue()
-        states_to_open.put((f_cost_by_state[current_state], current_state))
+        states_to_open.put((0, current_state))
 
-        while states_to_open_set:
+        while not states_to_open.empty():
             priority, current_state = states_to_open.get()
 
             if self.problem.is_goal_state(current_state):
@@ -55,24 +47,18 @@ class AStar(SearchFunction):
                 )
 
             states_to_open_set.remove(current_state)
-
             neighbors = self.problem.get_successors(current_state)
 
             for neighbor in neighbors:
+                new_g_score = g_cost_by_state[current_state] + self.problem.calculate_cost([current_state, neighbor])
 
-                if neighbor not in g_cost_by_state:
-                    g_cost_by_state[neighbor] = float('inf')
-                    f_cost_by_state[neighbor] = float('inf')
-
-                new_g_score = g_cost_by_state[current_state] + self.heuristic.calculate(current_state, neighbor)
-
-                if new_g_score < g_cost_by_state[neighbor]:
+                if neighbor not in g_cost_by_state or new_g_score < g_cost_by_state[neighbor]:
                     predecessor_by_state[neighbor] = current_state
                     g_cost_by_state[neighbor] = new_g_score
-                    f_cost_by_state[neighbor] = new_g_score + self.heuristic.calculate(neighbor, goal_state)
+                    state_priority = new_g_score + self.heuristic.calculate(neighbor, goal_state)
 
                     if neighbor not in states_to_open_set:
-                        states_to_open.put((f_cost_by_state[neighbor], neighbor))
+                        states_to_open.put((state_priority, neighbor))
                         states_to_open_set.add(neighbor)
 
             closed_states.add(current_state)

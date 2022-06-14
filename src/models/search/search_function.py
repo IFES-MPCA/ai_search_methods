@@ -16,6 +16,9 @@ class SearchResponse(Generic[T]):
         self.generated = generated
         self.expanded = expanded
 
+    def __repr__(self):
+        return f"n_path: {len(self.path)}; cost: {self.path_cost}; generated: {self.generated}; expanded: {self.expanded}\n"
+
 
 class SearchFunction(ABC, Generic[T]):
 
