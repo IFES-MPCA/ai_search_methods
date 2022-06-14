@@ -1,5 +1,4 @@
-from plistlib import Dict
-from typing import List
+from typing import List, Dict
 
 from src.models.base import T
 

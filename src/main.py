@@ -17,7 +17,7 @@ from src.models.search.search_function import SearchFunction, SearchResponse
 from src.ui.maze_viewer import MazeViewer
 
 
-def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, enable_visualization=False):
+def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, out_gui=False, out_file=True):
     def on_step_callback(generated: Iterable[Cell], expanded: Iterable[Cell]):
         viewer.update(generated, expanded)
 
@@ -28,7 +28,7 @@ def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, enab
     search_response: SearchResponse = None
 
     for i in range(times):
-        if enable_visualization:
+        if out_gui:
             search_response = method.solve(on_step_callback)
             viewer.update(path=search_response.path)
             viewer.pause()
@@ -42,7 +42,7 @@ def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, enab
         if not search_response:
             raise Exception("Não foi possível encontrar o caminho. Verifique se o labirinto é solúvel.")
 
-    if not enable_visualization:
+    if not out_gui and out_file:
         results_reporter = ReportResult(times, viewer.lines, viewer.columns, seed)
         avg_time = sum(executions_time) / times
         std_time = statistics.pstdev(executions_time)
@@ -91,9 +91,9 @@ def main():
             (dfs, 'Depth First Search')
         ]
 
-        # Passe True para habilitar a visualização de cada algoritmo
+        # Passe out_gui=True para habilitar a visualização gráfica de cada algoritmo
         for method, name in all_methods:
-            run(method, name, viewer, enable_visualization=False)
+            run(method, name, viewer, out_gui=True, out_file=False)
 
     print('Fim da execução')
     return 0
