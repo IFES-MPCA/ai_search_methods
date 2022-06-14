@@ -4,8 +4,8 @@ import cv2
 import numpy as np
 from numpy import ndarray
 
-from src.models.maze.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.maze_2d.cell import Cell, CellType
+from src.models.problem.maze_2d.hashable_2d_maze import Hashable2DMaze
 
 
 class MazeBlockColors:

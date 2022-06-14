@@ -4,8 +4,8 @@ from typing import Iterable
 from src.application.report.result_reporter import ReportResult
 from src.application.util.config import Config
 from src.application.util.measure import measure
-from src.models.maze.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.maze_2d.cell import Cell, CellType
+from src.models.problem.maze_2d.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.maze_2d.maze_2d_heuristics import EuclidianCost, OctileCost
 from src.models.problem.maze_2d.maze_2d_problem import Maze2DProblem
 from src.models.problem.search_problem import SearchProblem
