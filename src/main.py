@@ -19,7 +19,7 @@ from src.ui.maze_viewer import MazeViewer
 
 def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, out_gui=False, out_file=True):
     def on_step_callback(generated: Iterable[Cell], expanded: Iterable[Cell]):
-        viewer.update(generated, expanded)
+        viewer.update(generated, expanded, window_name=method_name)
 
     times = Config.n_executions
     seed = Config.seed
@@ -30,7 +30,7 @@ def run(method: SearchFunction[Cell], method_name: str, viewer: MazeViewer, out_
     for i in range(times):
         if out_gui:
             search_response = method.solve(on_step_callback)
-            viewer.update(path=search_response.path)
+            viewer.update(path=search_response.path, window_name=method_name)
             viewer.pause()
             return
 
@@ -83,6 +83,8 @@ def main():
         ucs: SearchFunction[Cell] = UniformCostSearch(problem)
         a_star_euclidian: SearchFunction[Cell] = AStar(problem, euclidian_heuristic)
         a_star_octil: SearchFunction[Cell] = AStar(problem, manhattan_heuristic)
+
+        # Comente ou remova a linha do método que quiser desabilitar na lista abaixo
         all_methods = [
             (bfs, 'Breath First Search'),
             (ucs, 'Uniform Cost Search'),

@@ -43,7 +43,7 @@ class MazeViewer:
 
         self.__maze_img__: ndarray = maze_img
 
-    def update(self, generated=None, expanded=None, path=None):
+    def update(self, generated=None, expanded=None, path=None, window_name='View'):
         if path is None:
             path = []
 
@@ -65,7 +65,7 @@ class MazeViewer:
         maze_img = self.__apply_zoom__(maze_img, zoom=self.__zoom__)
         self.__draw_grid__(maze_img, self.__zoom__)
 
-        cv2.imshow("view", maze_img)
+        cv2.imshow(window_name, maze_img)
         cv2.waitKey(self.__delay__)
 
     @staticmethod
