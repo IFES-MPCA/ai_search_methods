@@ -1,6 +1,6 @@
 método,média (ms),desvio (ms),desvio (%),custo caminho,tamanho caminho,nós gerados,nós expandidos
-Breath First Search,673.60,30.75,4.56,297.63,222,31195,31195
-Uniform Cost Search,2531.22,160.43,6.34,295.14,222,31195,31195
-A* (Manhattan),45.31,9.20,20.31,303.73,231,804,253
-A* (Euclidian),513.89,29.34,5.71,297.49,226,7633,6931
-Depth First Search,766.64,57.55,7.51,313.39,239,12492,11909
+Breath First Search,691.91,35.34,5.11,297.63,222,0,31195
+Uniform Cost Search,2420.63,74.02,3.06,295.14,222,0,31195
+A* (Octile),196.04,9.66,4.93,295.73,223,748,3956
+A* (Euclidian),346.74,16.44,4.74,295.14,222,792,7996
+Depth First Search,727.82,44.04,6.05,313.39,239,583,11909
