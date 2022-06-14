@@ -1,7 +1,7 @@
 from typing import Iterable, List
 
-from src.models.maze.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.maze_2d.cell import Cell, CellType, CellPosition
+from src.models.problem.maze_2d.hashable_2d_maze import Hashable2DMaze
 from src.models.problem.search_problem import SearchProblem
 
 
@@ -16,10 +16,10 @@ class Maze2DProblem(SearchProblem[Cell]):
         self.maze.set_cell(start)
         self.maze.set_cell(goal)
 
-    def start_state(self) -> Cell:
+    def get_start_state(self) -> Cell:
         return self.start
 
-    def goal_state(self) -> Cell:
+    def get_goal_state(self) -> Cell:
         return self.goal
 
     def is_goal_state(self, state: Cell) -> bool:

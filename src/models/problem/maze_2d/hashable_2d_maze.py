@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict
 
 from src.models.problem.maze_2d.cell import CellType, Cell, CellPosition
 
@@ -36,20 +36,3 @@ class Hashable2DMaze:
 
     def get_cell(self, position: CellPosition) -> Optional[Cell]:
         return self.maze[position]
-
-    def get_neighbors(self, cell: Cell) -> List[Cell]:
-        all_positions: List[CellPosition] = [
-            (cell.x, cell.y - 1),
-            (cell.x - 1, cell.y - 1),
-            (cell.x + 1, cell.y - 1),
-            (cell.x - 1, cell.y + 1),
-            (cell.x, cell.y + 1),
-            (cell.x + 1, cell.y + 1),
-            (cell.x - 1, cell.y),
-            (cell.x + 1, cell.y),
-        ]
-
-        return [
-            Cell(pos[1], pos[0], self.get_cell(pos).type) for pos in all_positions if
-            pos in self.maze and self.maze[pos].type != CellType.OBSTACLE
-        ]
